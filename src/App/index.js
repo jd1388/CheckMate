@@ -69,17 +69,24 @@ class App extends Component {
     displayCategoryElements(elements, categoryIndex) {
         return elements.map((element, elementIndex) => {
             const elementType = element.trim().charAt(0);
-            const elementToDisplay = element.replace(/ /g, '\u00a0');
+            const elementToDisplay = element.trim();
+
+            let indentLevel = 0;
+
+            while (element.charAt(indentLevel) === ' ')
+                indentLevel++;
+
+            const indentationMargin = { marginLeft: `${48 * (indentLevel / 4 - 1)}px` }
 
             switch(elementType) {
                 case '*':
-                    return <p key={`${element}-${categoryIndex}`} style={Styles.commentElement}>{elementToDisplay}</p>
+                    return <p key={`${element}-${categoryIndex}`} style={Object.assign({}, Styles.commentElement, indentationMargin)}>{elementToDisplay}</p>
                 case '?':
-                    return <p key={`${element}-${categoryIndex}`} style={Styles.questionElement}>{elementToDisplay}</p>
+                    return <p key={`${element}-${categoryIndex}`} style={Object.assign({}, Styles.questionElement, indentationMargin)}>{elementToDisplay}</p>
                 case '!':
-                    return <p key={`${element}-${categoryIndex}`} style={Styles.excitedElement}>{elementToDisplay}</p>
+                    return <p key={`${element}-${categoryIndex}`} style={Object.assign({}, Styles.excitedElement, indentationMargin)}>{elementToDisplay}</p>
                 default:
-                    return <p key={`${element}-${categoryIndex}`} style={Styles.regularElement}>{elementToDisplay}</p>
+                    return <p key={`${element}-${categoryIndex}`} style={Object.assign({}, Styles.regularElement, indentationMargin)}>{elementToDisplay}</p>
             }
         });
     }
