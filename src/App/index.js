@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import Paper from 'material-ui/Paper';
+import TextareaAutosize from 'react-autosize-textarea';
 
 import Styles from './styles';
 
@@ -135,28 +136,28 @@ class App extends Component {
                 case '*':
                     return (
                         <Paper key={element.id} style={Object.assign({}, Styles.commentElement, indentationMargin)}>
-                            <p style={Styles.elementValue} >{elementToDisplay}</p>
+                            <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
                             <div>{element.children ? this.displayCategoryElements(element.children) : ''}</div>
                         </Paper>
                     );
                 case '?':
                     return (
                         <Paper key={element.id} style={Object.assign({}, Styles.questionElement, indentationMargin)}>
-                            <p style={Styles.elementValue} >{elementToDisplay}</p>
+                            <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
                             <div>{element.children ? this.displayCategoryElements(element.children) : ''}</div>
                         </Paper>
                     );
                 case '!':
                     return (
                         <Paper key={element.id} style={Object.assign({}, Styles.excitedElement, indentationMargin)}>
-                            <p style={Styles.elementValue} >{elementToDisplay}</p>
+                            <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
                             <div>{element.children ? this.displayCategoryElements(element.children) : ''}</div>
                         </Paper>
                     );
                 default:
                     return (
                         <Paper key={element.id} style={Object.assign({}, Styles.regularElement, indentationMargin)}>
-                            <p style={Styles.elementValue} >{elementToDisplay}</p>
+                            <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
                             <div>{element.children ? this.displayCategoryElements(element.children) : ''}</div>
                         </Paper>
                     );

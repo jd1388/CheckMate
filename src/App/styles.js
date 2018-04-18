@@ -40,6 +40,13 @@ export default {
         margin: '12px 0',
         textIndent: '-1em',
         paddingLeft: '1em',
-        fontFamily: 'Roboto Mono, monospace'
+        fontFamily: 'Roboto Mono, monospace',
+        backgroundColor: 'inherit',
+        fontSize: 'inherit',
+        width: 'calc(100% - 48px)',
+        border: 'none',
+        outline: 'none',
+        overflow: 'auto',
+        resize: 'none'
     }
 };
