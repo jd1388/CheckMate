@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
+import Paper from 'material-ui/Paper';
 
 import Styles from './styles';
 
@@ -29,23 +30,12 @@ class App extends Component {
 
             const parsedList = [];
             let key = 1;
-
-            // for (let i = 0; i < listElements.length; i++) {
-            //     const currentLine = listElements[i];
-
-            //     if (currentLine.charAt(0) === ':') {
-            //         parsedList.push({ title: currentLine, elements: [] });
-            //         key++;
-            //     } else
-            //         parsedList[key - 1].elements.push(currentLine);
-            // }
-
             let parentIds = [0];
             let currentLevel = 0;
 
             listElements.forEach(element => {
                 let level = 0;
-                while (element.charAt(level) == ' ')
+                while (element.charAt(level) === ' ')
                     level++;
 
                 level = level / 4 + 1;
@@ -108,7 +98,6 @@ class App extends Component {
             };
 
             const treeifiedList = getTree(parsedList, 0);
-            console.log(treeifiedList);
 
             this.setState({
                 todoList: treeifiedList,
@@ -120,43 +109,57 @@ class App extends Component {
     displayTodoList() {
         const { todoList } = this.state;
 
-        const list = [];
-
-        todoList.forEach((category, index) => {
-            list.push(
-                <Card key={index} style={Styles.card}>
-                    <CardTitle style={Styles.cardTitle}>{category.title.substring(2)}</CardTitle>
-                    <CardText style={Styles.cardText}>
-                        { this.displayCategoryElements(category.elements, index) }
-                    </CardText>
+        return todoList.map(category => {
+            return (
+                <Card key={category.id} style={Styles.card}>
+                    <CardTitle style={Styles.cardTitle}>{category.value}</CardTitle>
+                    <CardText style={Styles.cardText}>{category.children ? this.displayCategoryElements(category.children) : ''}</CardText>
                 </Card>
-            );
+            )
         });
-
-        return list;
     }
 
-    displayCategoryElements(elements, categoryIndex) {
-        return elements.map((element, elementIndex) => {
-            const elementType = element.trim().charAt(0);
-            const elementToDisplay = element.trim();
+    displayCategoryElements(elements) {
+        return elements.map(element => {
+            const elementType = element.value.trim().charAt(0);
+            const elementToDisplay = element.value.trim();
 
             let indentLevel = 0;
 
-            while (element.charAt(indentLevel) === ' ')
+            while (element.value.charAt(indentLevel) === ' ')
                 indentLevel++;
 
-            const indentationMargin = { marginLeft: `${48 * (indentLevel / 4 - 1)}px` }
+            const indentationMargin = { marginLeft: `${indentLevel / 4 - 1 ? '48px' : 0}` }
 
-            switch(elementType) {
+            switch (elementType) {
                 case '*':
-                    return <p key={`${element}-${categoryIndex}`} style={Object.assign({}, Styles.commentElement, indentationMargin)}>{elementToDisplay}</p>
+                    return (
+                        <Paper key={element.id} style={Object.assign({}, Styles.commentElement, indentationMargin)}>
+                            <p style={Styles.elementValue} >{elementToDisplay}</p>
+                            <div>{element.children ? this.displayCategoryElements(element.children) : ''}</div>
+                        </Paper>
+                    );
                 case '?':
-                    return <p key={`${element}-${categoryIndex}`} style={Object.assign({}, Styles.questionElement, indentationMargin)}>{elementToDisplay}</p>
+                    return (
+                        <Paper key={element.id} style={Object.assign({}, Styles.questionElement, indentationMargin)}>
+                            <p style={Styles.elementValue} >{elementToDisplay}</p>
+                            <div>{element.children ? this.displayCategoryElements(element.children) : ''}</div>
+                        </Paper>
+                    );
                 case '!':
-                    return <p key={`${element}-${categoryIndex}`} style={Object.assign({}, Styles.excitedElement, indentationMargin)}>{elementToDisplay}</p>
+                    return (
+                        <Paper key={element.id} style={Object.assign({}, Styles.excitedElement, indentationMargin)}>
+                            <p style={Styles.elementValue} >{elementToDisplay}</p>
+                            <div>{element.children ? this.displayCategoryElements(element.children) : ''}</div>
+                        </Paper>
+                    );
                 default:
-                    return <p key={`${element}-${categoryIndex}`} style={Object.assign({}, Styles.regularElement, indentationMargin)}>{elementToDisplay}</p>
+                    return (
+                        <Paper key={element.id} style={Object.assign({}, Styles.regularElement, indentationMargin)}>
+                            <p style={Styles.elementValue} >{elementToDisplay}</p>
+                            <div>{element.children ? this.displayCategoryElements(element.children) : ''}</div>
+                        </Paper>
+                    );
             }
         });
     }
