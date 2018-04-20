@@ -1,7 +1,7 @@
 export default {
     cardTitle: {
         fontWeight: 'bold',
-        backgroundColor: '#F9D79F'
+        backgroundColor: '#ffe9ba'
     },
     card: {
         fontSize: '16pt',
@@ -25,7 +25,7 @@ export default {
         marginBottom: '12px'
     },
     questionElement: {
-        backgroundColor: '#ffeded',
+        backgroundColor: '#ffd8d8',
         padding: '12px',
         borderRadius: '6px',
         marginBottom: '12px'
@@ -48,5 +48,18 @@ export default {
         outline: 'none',
         overflow: 'auto',
         resize: 'none'
+    },
+    cardTitleValue: {
+        textIndent: '-1em',
+        paddingLeft: '1em',
+        fontFamily: 'Roboto, sans-serif',
+        backgroundColor: 'inherit',
+        fontSize: 'inherit',
+        width: 'calc(100% - 48px)',
+        border: 'none',
+        outline: 'none',
+        overflow: 'auto',
+        resize: 'none',
+        fontWeight: 600
     }
 };

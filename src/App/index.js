@@ -113,8 +113,12 @@ class App extends Component {
         return todoList.map(category => {
             return (
                 <Card key={category.id} style={Styles.card}>
-                    <CardTitle style={Styles.cardTitle}>{category.value}</CardTitle>
-                    <CardText style={Styles.cardText}>{category.children ? this.displayCategoryElements(category.children) : ''}</CardText>
+                    <CardTitle style={Styles.cardTitle}>
+                        <TextareaAutosize style={Styles.cardTitleValue} defaultValue={category.value.trim()}/>
+                    </CardTitle>
+                    <CardText style={Styles.cardText}>
+                        {category.children && this.displayCategoryElements(category.children)}
+                    </CardText>
                 </Card>
             )
         });
@@ -137,28 +141,28 @@ class App extends Component {
                     return (
                         <Paper key={element.id} style={Object.assign({}, Styles.commentElement, indentationMargin)}>
                             <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
-                            <div>{element.children ? this.displayCategoryElements(element.children) : ''}</div>
+                            <div>{element.children && this.displayCategoryElements(element.children)}</div>
                         </Paper>
                     );
                 case '?':
                     return (
                         <Paper key={element.id} style={Object.assign({}, Styles.questionElement, indentationMargin)}>
                             <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
-                            <div>{element.children ? this.displayCategoryElements(element.children) : ''}</div>
+                            <div>{element.children && this.displayCategoryElements(element.children)}</div>
                         </Paper>
                     );
                 case '!':
                     return (
                         <Paper key={element.id} style={Object.assign({}, Styles.excitedElement, indentationMargin)}>
                             <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
-                            <div>{element.children ? this.displayCategoryElements(element.children) : ''}</div>
+                            <div>{element.children && this.displayCategoryElements(element.children)}</div>
                         </Paper>
                     );
                 default:
                     return (
                         <Paper key={element.id} style={Object.assign({}, Styles.regularElement, indentationMargin)}>
                             <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
-                            <div>{element.children ? this.displayCategoryElements(element.children) : ''}</div>
+                            <div>{element.children && this.displayCategoryElements(element.children)}</div>
                         </Paper>
                     );
             }
