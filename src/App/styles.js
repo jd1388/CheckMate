@@ -1,7 +1,10 @@
 export default {
     cardTitle: {
         fontWeight: 'bold',
-        backgroundColor: '#ffe9ba'
+        backgroundColor: '#ffe9ba',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     card: {
         fontSize: '16pt',
@@ -61,5 +64,17 @@ export default {
         overflow: 'auto',
         resize: 'none',
         fontWeight: 600
+    },
+    buttonContainer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        fontWeight: 'normal',
+        height: '100%',
+        paddingTop: '4px'
+    },
+    cardTextContainer: {
+        display: 'flex',
+        justifyContent: 'space-between'
     }
 };

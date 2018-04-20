@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import Paper from 'material-ui/Paper';
+import IconButton from 'material-ui/IconButton';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import HardwareKeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import TextareaAutosize from 'react-autosize-textarea';
 
 import Styles from './styles';
@@ -115,6 +119,17 @@ class App extends Component {
                 <Card key={category.id} style={Styles.card}>
                     <CardTitle style={Styles.cardTitle}>
                         <TextareaAutosize style={Styles.cardTitleValue} defaultValue={category.value.trim()}/>
+                        <div style={Styles.buttonContainer}>
+                            <IconButton tooltip='More...' tooltipPosition='top-center'>
+                                <HardwareKeyboardArrowDown/>
+                            </IconButton>
+                            <IconButton tooltip='Add' tooltipPosition='top-center'>
+                                <ContentAdd/>
+                            </IconButton>
+                            <IconButton tooltip='Delete' tooltipPosition='top-center'>
+                                <NavigationClose/>
+                            </IconButton>
+                        </div>
                     </CardTitle>
                     <CardText style={Styles.cardText}>
                         {category.children && this.displayCategoryElements(category.children)}
@@ -140,29 +155,81 @@ class App extends Component {
                 case '*':
                     return (
                         <Paper key={element.id} style={Object.assign({}, Styles.commentElement, indentationMargin)}>
-                            <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
-                            <div>{element.children && this.displayCategoryElements(element.children)}</div>
+                            <div style={Styles.cardTextContainer}>
+                                <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
+                                <div style={Styles.buttonContainer}>
+                                    <IconButton tooltip='More...' tooltipPosition='top-center'>
+                                        <HardwareKeyboardArrowDown/>
+                                    </IconButton>
+                                    <IconButton tooltip='Add' tooltipPosition='top-center'>
+                                        <ContentAdd/>
+                                    </IconButton>
+                                    <IconButton tooltip='Delete' tooltipPosition='top-center'>
+                                        <NavigationClose/>
+                                    </IconButton>
+                                </div>
+                            </div>
+                            {element.children && this.displayCategoryElements(element.children)}
                         </Paper>
                     );
                 case '?':
                     return (
                         <Paper key={element.id} style={Object.assign({}, Styles.questionElement, indentationMargin)}>
-                            <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
-                            <div>{element.children && this.displayCategoryElements(element.children)}</div>
+                            <div style={Styles.cardTextContainer}>
+                                <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
+                                <div style={Styles.buttonContainer}>
+                                    <IconButton tooltip='More...' tooltipPosition='top-center'>
+                                        <HardwareKeyboardArrowDown/>
+                                    </IconButton>
+                                    <IconButton tooltip='Add' tooltipPosition='top-center'>
+                                        <ContentAdd/>
+                                    </IconButton>
+                                    <IconButton tooltip='Delete' tooltipPosition='top-center'>
+                                        <NavigationClose/>
+                                    </IconButton>
+                                </div>
+                            </div>
+                            {element.children && this.displayCategoryElements(element.children)}
                         </Paper>
                     );
                 case '!':
                     return (
                         <Paper key={element.id} style={Object.assign({}, Styles.excitedElement, indentationMargin)}>
-                            <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
-                            <div>{element.children && this.displayCategoryElements(element.children)}</div>
+                            <div style={Styles.cardTextContainer}>
+                                <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
+                                <div style={Styles.buttonContainer}>
+                                    <IconButton tooltip='More...' tooltipPosition='top-center'>
+                                        <HardwareKeyboardArrowDown/>
+                                    </IconButton>
+                                    <IconButton tooltip='Add' tooltipPosition='top-center'>
+                                        <ContentAdd/>
+                                    </IconButton>
+                                    <IconButton tooltip='Delete' tooltipPosition='top-center'>
+                                        <NavigationClose/>
+                                    </IconButton>
+                                </div>
+                            </div>
+                            {element.children && this.displayCategoryElements(element.children)}
                         </Paper>
                     );
                 default:
                     return (
                         <Paper key={element.id} style={Object.assign({}, Styles.regularElement, indentationMargin)}>
-                            <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
-                            <div>{element.children && this.displayCategoryElements(element.children)}</div>
+                            <div style={Styles.cardTextContainer}>
+                                <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
+                                <div style={Styles.buttonContainer}>
+                                    <IconButton tooltip='More...' tooltipPosition='top-center'>
+                                        <HardwareKeyboardArrowDown/>
+                                    </IconButton>
+                                    <IconButton tooltip='Add' tooltipPosition='top-center'>
+                                        <ContentAdd/>
+                                    </IconButton>
+                                    <IconButton tooltip='Delete' tooltipPosition='top-center'>
+                                        <NavigationClose/>
+                                    </IconButton>
+                                </div>
+                            </div>
+                            {element.children && this.displayCategoryElements(element.children)}
                         </Paper>
                     );
             }
