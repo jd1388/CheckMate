@@ -9,42 +9,52 @@ import TextareaAutosize from 'react-autosize-textarea';
 
 import Styles from './styles';
 
-export default class NoteCard extends Component {
+export default class Note extends Component {
     constructor(props) {
         super(props);
 
-        const { notes, parent, id } = props;
+        const { notes } = props;
 
         this.state = {
-            notes,
-            parent,
-            id
+            notes
         };
     }
 
+    addNote() {
+        const { updateNextId, id, parent } = this.props;
+        const { notes } = this.state;
+
+        const noteToAddTo = notes.find(note => note.parentId === id);
+        const subnote = {
+            parentId: noteToAddTo.id,
+            id: updateNextId(),
+            value: '',
+            children: []
+        };
+
+        noteToAddTo.children.push(subnote);
+
+        this.setState({ notes });
+    }
+
     displayCategoryElements(elements) {
+        const { updateNextId } = this.props;
+
         return elements.map(element => {
             const elementType = element.value.trim().charAt(0);
             const elementToDisplay = element.value.trim();
 
-            let indentLevel = 0;
-
-            while (element.value.charAt(indentLevel) === ' ')
-                indentLevel++;
-
-            const indentationMargin = { marginLeft: `${indentLevel / 4 - 1 ? '48px' : 0}` }
-
             switch (elementType) {
                 case '*':
                     return (
-                        <Paper key={element.id} style={Object.assign({}, Styles.commentElement, indentationMargin)}>
+                        <Paper key={element.id} style={Styles.commentElement}>
                             <div style={Styles.cardTextContainer}>
                                 <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
                                 <div style={Styles.buttonContainer}>
                                     <IconButton tooltip='More...' tooltipPosition='top-center'>
                                         <HardwareKeyboardArrowDown/>
                                     </IconButton>
-                                    <IconButton tooltip='Add' tooltipPosition='top-center'>
+                                    <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
                                         <ContentAdd/>
                                     </IconButton>
                                     <IconButton tooltip='Delete' tooltipPosition='top-center'>
@@ -52,19 +62,26 @@ export default class NoteCard extends Component {
                                     </IconButton>
                                 </div>
                             </div>
-                            {element.children && this.displayCategoryElements(element.children)}
+                            {element.children &&
+                                <Note
+                                    notes={element.children}
+                                    parent={element.parentId}
+                                    id={element.id}
+                                    updateNextId={updateNextId}
+                                />
+                            }
                         </Paper>
                     );
                 case '?':
                     return (
-                        <Paper key={element.id} style={Object.assign({}, Styles.questionElement, indentationMargin)}>
+                        <Paper key={element.id} style={Styles.questionElement}>
                             <div style={Styles.cardTextContainer}>
                                 <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
                                 <div style={Styles.buttonContainer}>
                                     <IconButton tooltip='More...' tooltipPosition='top-center'>
                                         <HardwareKeyboardArrowDown/>
                                     </IconButton>
-                                    <IconButton tooltip='Add' tooltipPosition='top-center'>
+                                    <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
                                         <ContentAdd/>
                                     </IconButton>
                                     <IconButton tooltip='Delete' tooltipPosition='top-center'>
@@ -72,19 +89,26 @@ export default class NoteCard extends Component {
                                     </IconButton>
                                 </div>
                             </div>
-                            {element.children && this.displayCategoryElements(element.children)}
+                            {element.children &&
+                                <Note
+                                    notes={element.children}
+                                    parent={element.parentId}
+                                    id={element.id}
+                                    updateNextId={updateNextId}
+                                />
+                            }
                         </Paper>
                     );
                 case '!':
                     return (
-                        <Paper key={element.id} style={Object.assign({}, Styles.excitedElement, indentationMargin)}>
+                        <Paper key={element.id} style={Styles.excitedElement}>
                             <div style={Styles.cardTextContainer}>
                                 <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
                                 <div style={Styles.buttonContainer}>
                                     <IconButton tooltip='More...' tooltipPosition='top-center'>
                                         <HardwareKeyboardArrowDown/>
                                     </IconButton>
-                                    <IconButton tooltip='Add' tooltipPosition='top-center'>
+                                    <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
                                         <ContentAdd/>
                                     </IconButton>
                                     <IconButton tooltip='Delete' tooltipPosition='top-center'>
@@ -92,19 +116,26 @@ export default class NoteCard extends Component {
                                     </IconButton>
                                 </div>
                             </div>
-                            {element.children && this.displayCategoryElements(element.children)}
+                            {element.children &&
+                                <Note
+                                    notes={element.children}
+                                    parent={element.parentId}
+                                    id={element.id}
+                                    updateNextId={updateNextId}
+                                />
+                            }
                         </Paper>
                     );
                 default:
                     return (
-                        <Paper key={element.id} style={Object.assign({}, Styles.regularElement, indentationMargin)}>
+                        <Paper key={element.id} style={Styles.regularElement}>
                             <div style={Styles.cardTextContainer}>
                                 <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
                                 <div style={Styles.buttonContainer}>
                                     <IconButton tooltip='More...' tooltipPosition='top-center'>
                                         <HardwareKeyboardArrowDown/>
                                     </IconButton>
-                                    <IconButton tooltip='Add' tooltipPosition='top-center'>
+                                    <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
                                         <ContentAdd/>
                                     </IconButton>
                                     <IconButton tooltip='Delete' tooltipPosition='top-center'>
@@ -112,7 +143,14 @@ export default class NoteCard extends Component {
                                     </IconButton>
                                 </div>
                             </div>
-                            {element.children && this.displayCategoryElements(element.children)}
+                            {element.children &&
+                                <Note
+                                    notes={element.children}
+                                    parent={element.parentId}
+                                    id={element.id}
+                                    updateNextId={updateNextId}
+                                />
+                            }
                         </Paper>
                     );
             }
@@ -120,8 +158,6 @@ export default class NoteCard extends Component {
     }
 
     render() {
-        console.log(this.state.notes);
-
         return (
             <div>
                 {this.displayCategoryElements(this.state.notes)}

@@ -1,27 +1,31 @@
 export default {
     regularElement: {
-        backgroundColor: '#e0f6ff',
+        backgroundColor: '#edf7ff',
         padding: '12px',
         borderRadius: '6px',
-        marginBottom: '12px'
+        marginBottom: '12px',
+        paddingLeft: '48px'
     },
     commentElement: {
         backgroundColor: '#F2F2F2',
         padding: '12px',
         borderRadius: '6px',
-        marginBottom: '12px'
+        marginBottom: '12px',
+        paddingLeft: '48px'
     },
     questionElement: {
         backgroundColor: '#ffd8d8',
         padding: '12px',
         borderRadius: '6px',
-        marginBottom: '12px'
+        marginBottom: '12px',
+        paddingLeft: '48px'
     },
     excitedElement: {
         backgroundColor: '#f4ffef',
         padding: '12px',
         borderRadius: '6px',
-        marginBottom: '12px'
+        marginBottom: '12px',
+        paddingLeft: '48px'
     },
     elementValue: {
         margin: '12px 0',

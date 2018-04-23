@@ -22,8 +22,11 @@ class App extends Component {
 
         this.state = {
             todoList: {},
-            todoListRead: false
+            todoListRead: false,
+            nextId: 0
         };
+
+        this.updateNextId = this.updateNextId.bind(this);
     }
 
     componentDidMount() {
@@ -107,9 +110,18 @@ class App extends Component {
 
             this.setState({
                 todoList: treeifiedList,
-                todoListRead: true
+                todoListRead: true,
+                nextId: key
             });
         });
+    }
+
+    updateNextId() {
+        const { nextId } = this.state;
+
+        this.setState({ nextId: nextId + 1 });
+
+        return nextId;
     }
 
     displayTodoList() {
@@ -134,7 +146,12 @@ class App extends Component {
                     </CardTitle>
                     <CardText style={Styles.cardText}>
                         {category.children &&
-                            <Note notes={category.children} parent={category.parentId} id={category.id}/>
+                            <Note
+                                notes={category.children}
+                                parent={category.parentId}
+                                id={category.id}
+                                updateNextId={this.updateNextId}
+                            />
                         }
                     </CardText>
                 </Card>
