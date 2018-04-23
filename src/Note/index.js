@@ -18,150 +18,80 @@ export default class Note extends Component {
         this.state = {
             notes
         };
+
+        this.updateTree = this.updateTree.bind(this);
+    }
+
+    updateTree(updatedNote) {
+        const { note, updateTree } = this.props;
+
+        const childToUpdate = updatedNote.id;
+
+        const updatedTree = Object.assign({}, note, {
+            children: note.children.map(subnote => {
+                return subnote.id === childToUpdate ? updatedNote : subnote;
+            })
+        });
+
+        updateTree(updatedTree);
     }
 
     addNote() {
-        const { updateNextId, id, parent } = this.props;
-        const { notes } = this.state;
+        const {
+            note,
+            getNextId,
+            updateTree
+        } = this.props;
 
-        const noteToAddTo = notes.find(note => note.parentId === id);
-        const subnote = {
-            parentId: noteToAddTo.id,
-            id: updateNextId(),
+        const newNote = {
+            id: getNextId(),
+            parentId: note.id,
             value: '',
             children: []
         };
 
-        noteToAddTo.children.push(subnote);
+        const newNoteData = Object.assign({}, note, {
+            children: [...note.children, newNote]
+        });
 
-        this.setState({ notes });
+        updateTree(newNoteData);
     }
 
-    displayCategoryElements(elements) {
-        const { updateNextId } = this.props;
+    displaySubnotes() {
+        const { note, getNextId } = this.props;
 
-        return elements.map(element => {
-            const elementType = element.value.trim().charAt(0);
-            const elementToDisplay = element.value.trim();
-
-            switch (elementType) {
-                case '*':
-                    return (
-                        <Paper key={element.id} style={Styles.commentElement}>
-                            <div style={Styles.cardTextContainer}>
-                                <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
-                                <div style={Styles.buttonContainer}>
-                                    <IconButton tooltip='More...' tooltipPosition='top-center'>
-                                        <HardwareKeyboardArrowDown/>
-                                    </IconButton>
-                                    <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
-                                        <ContentAdd/>
-                                    </IconButton>
-                                    <IconButton tooltip='Delete' tooltipPosition='top-center'>
-                                        <NavigationClose/>
-                                    </IconButton>
-                                </div>
-                            </div>
-                            {element.children &&
-                                <Note
-                                    notes={element.children}
-                                    parent={element.parentId}
-                                    id={element.id}
-                                    updateNextId={updateNextId}
-                                />
-                            }
-                        </Paper>
-                    );
-                case '?':
-                    return (
-                        <Paper key={element.id} style={Styles.questionElement}>
-                            <div style={Styles.cardTextContainer}>
-                                <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
-                                <div style={Styles.buttonContainer}>
-                                    <IconButton tooltip='More...' tooltipPosition='top-center'>
-                                        <HardwareKeyboardArrowDown/>
-                                    </IconButton>
-                                    <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
-                                        <ContentAdd/>
-                                    </IconButton>
-                                    <IconButton tooltip='Delete' tooltipPosition='top-center'>
-                                        <NavigationClose/>
-                                    </IconButton>
-                                </div>
-                            </div>
-                            {element.children &&
-                                <Note
-                                    notes={element.children}
-                                    parent={element.parentId}
-                                    id={element.id}
-                                    updateNextId={updateNextId}
-                                />
-                            }
-                        </Paper>
-                    );
-                case '!':
-                    return (
-                        <Paper key={element.id} style={Styles.excitedElement}>
-                            <div style={Styles.cardTextContainer}>
-                                <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
-                                <div style={Styles.buttonContainer}>
-                                    <IconButton tooltip='More...' tooltipPosition='top-center'>
-                                        <HardwareKeyboardArrowDown/>
-                                    </IconButton>
-                                    <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
-                                        <ContentAdd/>
-                                    </IconButton>
-                                    <IconButton tooltip='Delete' tooltipPosition='top-center'>
-                                        <NavigationClose/>
-                                    </IconButton>
-                                </div>
-                            </div>
-                            {element.children &&
-                                <Note
-                                    notes={element.children}
-                                    parent={element.parentId}
-                                    id={element.id}
-                                    updateNextId={updateNextId}
-                                />
-                            }
-                        </Paper>
-                    );
-                default:
-                    return (
-                        <Paper key={element.id} style={Styles.regularElement}>
-                            <div style={Styles.cardTextContainer}>
-                                <TextareaAutosize style={Styles.elementValue} defaultValue={elementToDisplay}/>
-                                <div style={Styles.buttonContainer}>
-                                    <IconButton tooltip='More...' tooltipPosition='top-center'>
-                                        <HardwareKeyboardArrowDown/>
-                                    </IconButton>
-                                    <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
-                                        <ContentAdd/>
-                                    </IconButton>
-                                    <IconButton tooltip='Delete' tooltipPosition='top-center'>
-                                        <NavigationClose/>
-                                    </IconButton>
-                                </div>
-                            </div>
-                            {element.children &&
-                                <Note
-                                    notes={element.children}
-                                    parent={element.parentId}
-                                    id={element.id}
-                                    updateNextId={updateNextId}
-                                />
-                            }
-                        </Paper>
-                    );
-            }
+        return note.children.map(subnote => {
+            return (
+                <Note note={subnote} getNextId={getNextId} updateTree={this.updateTree} key={subnote.id}/>
+            );
         });
     }
 
     render() {
+        const {
+            value,
+            children,
+            id
+        } = this.props.note;
+
         return (
-            <div>
-                {this.displayCategoryElements(this.state.notes)}
-            </div>
+            <Paper key={id} style={Styles.regularElement}>
+                <div style={Styles.cardTextContainer}>
+                    <TextareaAutosize style={Styles.elementValue} defaultValue={value.trim()}/>
+                    <div style={Styles.buttonContainer}>
+                        <IconButton tooltip='More...' tooltipPosition='top-center'>
+                            <HardwareKeyboardArrowDown/>
+                        </IconButton>
+                        <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
+                            <ContentAdd/>
+                        </IconButton>
+                        <IconButton tooltip='Delete' tooltipPosition='top-center'>
+                            <NavigationClose/>
+                        </IconButton>
+                    </div>
+                </div>
+                {this.displaySubnotes()}
+            </Paper>
         );
     }
 }

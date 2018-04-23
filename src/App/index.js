@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { Card, CardTitle, CardText } from 'material-ui/Card';
-import IconButton from 'material-ui/IconButton';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import HardwareKeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import TextareaAutosize from 'react-autosize-textarea';
 
-import Note from '../Note';
-
-import Styles from './styles';
+import NoteCard from '../NoteCard';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');
@@ -26,7 +18,8 @@ class App extends Component {
             nextId: 0
         };
 
-        this.updateNextId = this.updateNextId.bind(this);
+        this.getNextId = this.getNextId.bind(this);
+        this.updateTree = this.updateTree.bind(this);
     }
 
     componentDidMount() {
@@ -116,7 +109,7 @@ class App extends Component {
         });
     }
 
-    updateNextId() {
+    getNextId() {
         const { nextId } = this.state;
 
         this.setState({ nextId: nextId + 1 });
@@ -124,39 +117,16 @@ class App extends Component {
         return nextId;
     }
 
-    displayTodoList() {
+    updateTree(updatedCard) {
         const { todoList } = this.state;
 
-        return todoList.map(category => {
-            return (
-                <Card key={category.id} style={Styles.card}>
-                    <CardTitle style={Styles.cardTitle}>
-                        <TextareaAutosize style={Styles.cardTitleValue} defaultValue={category.value.trim()}/>
-                        <div style={Styles.buttonContainer}>
-                            <IconButton tooltip='More...' tooltipPosition='top-center'>
-                                <HardwareKeyboardArrowDown/>
-                            </IconButton>
-                            <IconButton tooltip='Add' tooltipPosition='top-center'>
-                                <ContentAdd/>
-                            </IconButton>
-                            <IconButton tooltip='Delete' tooltipPosition='top-center'>
-                                <NavigationClose/>
-                            </IconButton>
-                        </div>
-                    </CardTitle>
-                    <CardText style={Styles.cardText}>
-                        {category.children &&
-                            <Note
-                                notes={category.children}
-                                parent={category.parentId}
-                                id={category.id}
-                                updateNextId={this.updateNextId}
-                            />
-                        }
-                    </CardText>
-                </Card>
-            )
+        const nodeToUpdate = updatedCard.id;
+
+        const updatedTodoList = todoList.map(node => {
+            return node.id === nodeToUpdate ? updatedCard : node;
         });
+
+        this.setState({ todoList: updatedTodoList });
     }
 
     render() {
@@ -165,9 +135,7 @@ class App extends Component {
 
         return (
             <MuiThemeProvider>
-                <div>
-                    {this.displayTodoList()}
-                </div>
+                <NoteCard card={this.state.todoList[0]} getNextId={this.getNextId} updateTree={this.updateTree}/>
             </MuiThemeProvider>
         );
     }

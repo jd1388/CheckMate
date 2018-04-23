@@ -33,12 +33,12 @@ export default {
         paddingLeft: '1em',
         fontFamily: 'Roboto Mono, monospace',
         backgroundColor: 'inherit',
-        fontSize: 'inherit',
         width: 'calc(100% - 48px)',
         border: 'none',
         outline: 'none',
         overflow: 'auto',
-        resize: 'none'
+        resize: 'none',
+        fontSize: '16pt'
     },
     buttonContainer: {
         display: 'flex',
