@@ -85,6 +85,19 @@ export default class Note extends Component {
         });
     }
 
+    styleNote(type) {
+        switch (type) {
+            case '*':
+                return Styles.commentElement;
+            case '?':
+                return Styles.questionElement;
+            case '!':
+                return Styles.excitedElement;
+            default:
+                return Styles.regularElement;
+        }
+    }
+
     render() {
         const {
             value,
@@ -92,7 +105,7 @@ export default class Note extends Component {
         } = this.props.note;
 
         return (
-            <Paper key={id} style={Styles.regularElement}>
+            <Paper key={id} style={this.styleNote(value.trim().charAt(0))}>
                 <div style={Styles.cardTextContainer}>
                     <TextareaAutosize style={Styles.elementValue} defaultValue={value.trim()}/>
                     <div style={Styles.buttonContainer}>
