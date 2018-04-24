@@ -21,15 +21,25 @@ export default class NoteCard extends Component {
     updateTree(updatedNote) {
         const { card, updateTree } = this.props;
 
-        const childToUpdate = updatedNote.id;
+        if (typeof updatedNote === 'object') {
+            const childToUpdate = updatedNote.id;
 
-        const updatedTree = Object.assign({}, card, {
-            children: card.children.map(note => {
-                return note.id === childToUpdate ? updatedNote : note;
-            })
-        });
+            const updatedTree = Object.assign({}, card, {
+                children: card.children.map(note => {
+                    return note.id === childToUpdate ? updatedNote : note;
+                })
+            });
 
-        updateTree(updatedTree);
+            updateTree(updatedTree);
+        } else {
+            const updatedTree = Object.assign({}, card, {
+                children: card.children.filter(note => {
+                    return note.id !== updatedNote;
+                })
+            });
+
+            updateTree(updatedTree);
+        }
     }
 
     addNote() {
@@ -51,6 +61,12 @@ export default class NoteCard extends Component {
         });
 
         updateTree(newCardData);
+    }
+
+    deleteCard() {
+        const { card, updateTree } = this.props;
+
+        updateTree(card.id);
     }
 
     displayNotes() {
@@ -80,7 +96,7 @@ export default class NoteCard extends Component {
                         <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
                             <ContentAdd/>
                         </IconButton>
-                        <IconButton tooltip='Delete' tooltipPosition='top-center'>
+                        <IconButton tooltip='Delete' tooltipPosition='top-center' onClick={() => this.deleteCard()}>
                             <NavigationClose/>
                         </IconButton>
                      </div>

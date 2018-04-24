@@ -120,13 +120,21 @@ class App extends Component {
     updateTree(updatedCard) {
         const { todoList } = this.state;
 
-        const nodeToUpdate = updatedCard.id;
+        if (typeof updatedCard === 'object') {
+            const nodeToUpdate = updatedCard.id;
 
-        const updatedTodoList = todoList.map(node => {
-            return node.id === nodeToUpdate ? updatedCard : node;
-        });
+            const updatedTodoList = todoList.map(node => {
+                return node.id === nodeToUpdate ? updatedCard : node;
+            });
 
-        this.setState({ todoList: updatedTodoList });
+            this.setState({ todoList: updatedTodoList });
+        } else {
+            const updatedTodoList = todoList.filter(node => {
+                return node.id !== updatedCard;
+            });
+
+            this.setState({ todoList: updatedTodoList });
+        }
     }
 
     render() {

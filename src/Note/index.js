@@ -25,15 +25,25 @@ export default class Note extends Component {
     updateTree(updatedNote) {
         const { note, updateTree } = this.props;
 
-        const childToUpdate = updatedNote.id;
+        if (typeof updatedNote === 'object') {
+            const childToUpdate = updatedNote.id;
 
-        const updatedTree = Object.assign({}, note, {
-            children: note.children.map(subnote => {
-                return subnote.id === childToUpdate ? updatedNote : subnote;
-            })
-        });
+            const updatedTree = Object.assign({}, note, {
+                children: note.children.map(subnote => {
+                    return subnote.id === childToUpdate ? updatedNote : subnote;
+                })
+            });
 
-        updateTree(updatedTree);
+            updateTree(updatedTree);
+        } else {
+            const updatedTree = Object.assign({}, note, {
+                children: note.children.filter(subnote => {
+                    return subnote.id !== updatedNote;
+                })
+            });
+
+            updateTree(updatedTree);
+        }
     }
 
     addNote() {
@@ -55,6 +65,12 @@ export default class Note extends Component {
         });
 
         updateTree(newNoteData);
+    }
+
+    deleteNote() {
+        const { note, updateTree } = this.props;
+
+        updateTree(note.id);
     }
 
     displaySubnotes() {
@@ -84,7 +100,7 @@ export default class Note extends Component {
                         <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
                             <ContentAdd/>
                         </IconButton>
-                        <IconButton tooltip='Delete' tooltipPosition='top-center'>
+                        <IconButton tooltip='Delete' tooltipPosition='top-center' onClick={() => this.deleteNote()}>
                             <NavigationClose/>
                         </IconButton>
                     </div>
