@@ -70,7 +70,6 @@ export default class Note extends Component {
     render() {
         const {
             value,
-            children,
             id
         } = this.props.note;
 

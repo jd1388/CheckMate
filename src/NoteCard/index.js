@@ -32,6 +32,27 @@ export default class NoteCard extends Component {
         updateTree(updatedTree);
     }
 
+    addNote() {
+        const {
+            card,
+            getNextId,
+            updateTree
+        } = this.props;
+
+        const newNote = {
+            id: getNextId(),
+            parentId: card.id,
+            value: '',
+            children: []
+        };
+
+        const newCardData = Object.assign({}, card, {
+            children: [...card.children, newNote]
+        });
+
+        updateTree(newCardData);
+    }
+
     displayNotes() {
         const { card, getNextId } = this.props;
 
@@ -56,7 +77,7 @@ export default class NoteCard extends Component {
                         <IconButton tooltip='More...' tooltipPosition='top-center'>
                             <HardwareKeyboardArrowDown/>
                         </IconButton>
-                        <IconButton tooltip='Add' tooltipPosition='top-center'>
+                        <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
                             <ContentAdd/>
                         </IconButton>
                         <IconButton tooltip='Delete' tooltipPosition='top-center'>
