@@ -137,13 +137,23 @@ class App extends Component {
         }
     }
 
+    displayCards() {
+        const { todoList } = this.state;
+
+        return todoList.map(card => {
+            return (
+                <NoteCard card={card} getNextId={this.getNextId} updateTree={this.updateTree} key={card.id}/>
+            );
+        });
+    }
+
     render() {
         if (!this.state.todoListRead)
             return <div>Working on it</div>
 
         return (
             <MuiThemeProvider>
-                <NoteCard card={this.state.todoList[0]} getNextId={this.getNextId} updateTree={this.updateTree}/>
+                {this.displayCards()}
             </MuiThemeProvider>
         );
     }
