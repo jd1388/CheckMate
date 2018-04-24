@@ -27,5 +27,12 @@ export default {
         width: '100%',
         display: 'flex',
         justifyContent: 'flex-end'
+    },
+    loaderContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '95vh'
     }
 };

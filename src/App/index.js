@@ -8,6 +8,7 @@ import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import MenuItem from 'material-ui/MenuItem';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import NoteCard from '../NoteCard';
 
@@ -178,7 +179,13 @@ class App extends Component {
 
     render() {
         if (!this.state.todoListRead)
-            return <div>Working on it</div>
+            return (
+                <MuiThemeProvider>
+                    <div style={Styles.loaderContainer}>
+                        <CircularProgress size={160} thickness={7}/>
+                    </div>
+                </MuiThemeProvider>
+            );
 
         return (
             <MuiThemeProvider>
