@@ -48,4 +48,7 @@ export default {
         bottom: '4px',
         left: '16px'
     },
+    notecardText: {
+        paddingBottom: 0
+    }
 };

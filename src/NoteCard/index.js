@@ -117,7 +117,7 @@ export default class NoteCard extends Component {
                         </IconButton>
                      </div>
                 </CardTitle>
-                <CardText>
+                <CardText style={Styles.notecardText}>
                     {this.displayNotes()}
                 </CardText>
             </Card>
