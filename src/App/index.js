@@ -9,6 +9,8 @@ import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import MenuItem from 'material-ui/MenuItem';
 import CircularProgress from 'material-ui/CircularProgress';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 import NoteCard from '../NoteCard';
 
@@ -26,7 +28,8 @@ class App extends Component {
             todoList: {},
             todoListRead: false,
             nextId: 0,
-            drawerOpen: false
+            drawerOpen: false,
+            deleteAllDialogOpen: false
         };
 
         this.getNextId = this.getNextId.bind(this);
@@ -177,6 +180,27 @@ class App extends Component {
         this.setState({ drawerOpen: !this.state.drawerOpen });
     }
 
+    toggleDeleteAllDialog() {
+        this.setState({ deleteAllDialogOpen: !this.state.deleteAllDialogOpen });
+    }
+
+    deleteAllNotes() {
+        this.setState({ todoList: [] });
+    }
+
+    getDeleteAllDialogActions() {
+        return [
+            <FlatButton
+                label='Cancel'
+                onClick={() => { this.toggleDeleteAllDialog(); this.toggleDrawer(); }}
+            />,
+            <FlatButton
+                label='Delete'
+                onClick={() => { this.deleteAllNotes(); this.toggleDeleteAllDialog(); this.toggleDrawer() }}
+            />
+        ]
+    }
+
     render() {
         if (!this.state.todoListRead)
             return (
@@ -207,10 +231,18 @@ class App extends Component {
                         <MenuItem>Save Changes</MenuItem>
                         <MenuItem>Import Notes</MenuItem>
                         <MenuItem>Export to File</MenuItem>
-                        <MenuItem>Delete All</MenuItem>
+                        <MenuItem onClick={() => this.toggleDeleteAllDialog()}>Delete All</MenuItem>
                     </Drawer>
                     {this.displayCards()}
                     <RaisedButton label='Add New Card' style={Styles.addCard} onClick={() => this.addCard()}/>
+                    <Dialog
+                        actions={this.getDeleteAllDialogActions()}
+                        modal={false}
+                        open={this.state.deleteAllDialogOpen}
+                        onRequestClose={() => { this.toggleDrawer(); this.toggleDeleteAllDialog(); }}
+                    >
+                        Are you sure you want to delete all of your notes?
+                    </Dialog>
                 </div>
             </MuiThemeProvider>
         );
