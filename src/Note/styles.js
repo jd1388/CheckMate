@@ -51,5 +51,16 @@ export default {
     cardTextContainer: {
         display: 'flex',
         justifyContent: 'space-between'
+    },
+    noteExtraOptions: {
+        height: '48px',
+        bottom: '4px',
+        left: '16px'
+    },
+    noteDropdownIcon: {
+        fill: 'black'
+    },
+    noteDropdownUnderline: {
+        display: 'none'
     }
 };

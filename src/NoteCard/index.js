@@ -6,6 +6,8 @@ import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import HardwareKeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 import Note from '../Note';
 
@@ -90,9 +92,12 @@ export default class NoteCard extends Component {
                 <CardTitle style={Styles.notecardTitle}>
                     <TextareaAutosize style={Styles.notecardTitleValue} defaultValue={value.trim()}/>
                     <div style={Styles.notecardTitleMenu}>
-                        <IconButton tooltip='More...' tooltipPosition='top-center'>
-                            <HardwareKeyboardArrowDown/>
-                        </IconButton>
+                        <DropDownMenu
+                            style={Styles.notecardExtraOptions}
+                            iconStyle={Styles.notecardDropdownIcon}
+                            underlineStyle={Styles.notecardDropdownUnderline}
+                            iconButton={<HardwareKeyboardArrowDown/>}
+                        />
                         <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
                             <ContentAdd/>
                         </IconButton>

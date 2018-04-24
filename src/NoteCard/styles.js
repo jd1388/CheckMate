@@ -31,5 +31,16 @@ export default {
         fontWeight: 'normal',
         height: '100%',
         paddingTop: '4px'
+    },
+    notecardExtraOptions: {
+        height: '48px',
+        bottom: '4px',
+        left: '16px'
+    },
+    notecardDropdownIcon: {
+        fill: 'black'
+    },
+    notecardDropdownUnderline: {
+        display: 'none'
     }
 };

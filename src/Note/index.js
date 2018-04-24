@@ -5,6 +5,8 @@ import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import HardwareKeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 import TextareaAutosize from 'react-autosize-textarea';
 
 import Styles from './styles';
@@ -94,9 +96,12 @@ export default class Note extends Component {
                 <div style={Styles.cardTextContainer}>
                     <TextareaAutosize style={Styles.elementValue} defaultValue={value.trim()}/>
                     <div style={Styles.buttonContainer}>
-                        <IconButton tooltip='More...' tooltipPosition='top-center'>
-                            <HardwareKeyboardArrowDown/>
-                        </IconButton>
+                        <DropDownMenu
+                            style={Styles.noteExtraOptions}
+                            iconStyle={Styles.noteDropdownIcon}
+                            underlineStyle={Styles.noteDropdownUnderline}
+                            iconButton={<HardwareKeyboardArrowDown/>}
+                        />
                         <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
                             <ContentAdd/>
                         </IconButton>

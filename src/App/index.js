@@ -153,7 +153,9 @@ class App extends Component {
 
         return (
             <MuiThemeProvider>
-                {this.displayCards()}
+                <div>
+                    {this.displayCards()}
+                </div>
             </MuiThemeProvider>
         );
     }
