@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import Drawer from 'material-ui/Drawer';
+import IconButton from 'material-ui/IconButton';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import MenuItem from 'material-ui/MenuItem';
 
 import NoteCard from '../NoteCard';
 
@@ -18,7 +24,8 @@ class App extends Component {
         this.state = {
             todoList: {},
             todoListRead: false,
-            nextId: 0
+            nextId: 0,
+            drawerOpen: false
         };
 
         this.getNextId = this.getNextId.bind(this);
@@ -165,6 +172,10 @@ class App extends Component {
         this.setState({ todoList: newTodoList });
     }
 
+    toggleDrawer() {
+        this.setState({ drawerOpen: !this.state.drawerOpen });
+    }
+
     render() {
         if (!this.state.todoListRead)
             return <div>Working on it</div>
@@ -172,6 +183,25 @@ class App extends Component {
         return (
             <MuiThemeProvider>
                 <div style={Styles.appContainer}>
+                    <div style={Styles.drawerFabContainer}>
+                        <FloatingActionButton
+                            backgroundColor={Styles.drawerFab.backgroundColor}
+                            onClick={() => this.toggleDrawer()}
+                        >
+                            <NavigationMenu/>
+                        </FloatingActionButton>
+                    </div>
+                    <Drawer open={this.state.drawerOpen} style={Styles.drawer}>
+                        <div style={Styles.drawerCloseButtonContainer}>
+                            <IconButton onClick={() => this.toggleDrawer()}>
+                                <NavigationClose/>
+                            </IconButton>
+                        </div>
+                        <MenuItem>Save Changes</MenuItem>
+                        <MenuItem>Import Notes</MenuItem>
+                        <MenuItem>Export to File</MenuItem>
+                        <MenuItem>Delete All</MenuItem>
+                    </Drawer>
                     {this.displayCards()}
                     <RaisedButton label='Add New Card' style={Styles.addCard} onClick={() => this.addCard()}/>
                 </div>
