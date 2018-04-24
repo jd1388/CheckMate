@@ -44,7 +44,7 @@ export default class NoteCard extends Component {
         }
     }
 
-    addNote() {
+    addNote(type) {
         const {
             card,
             getNextId,
@@ -54,7 +54,7 @@ export default class NoteCard extends Component {
         const newNote = {
             id: getNextId(),
             parentId: card.id,
-            value: '',
+            value: type,
             children: []
         };
 
@@ -90,7 +90,10 @@ export default class NoteCard extends Component {
         return (
             <Card style={Styles.notecard} key={id}>
                 <CardTitle style={Styles.notecardTitle}>
-                    <TextareaAutosize style={Styles.notecardTitleValue} defaultValue={value.trim()}/>
+                    <TextareaAutosize
+                        style={Styles.notecardTitleValue}
+                        defaultValue={value.trim().length === 1 ? `${value.trim()} ` : value.trim()}
+                    />
                     <div style={Styles.notecardTitleMenu}>
                         <DropDownMenu
                             style={Styles.notecardExtraOptions}
@@ -98,10 +101,18 @@ export default class NoteCard extends Component {
                             underlineStyle={Styles.notecardDropdownUnderline}
                             iconButton={<HardwareKeyboardArrowDown/>}
                         />
-                        <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
-                            <ContentAdd/>
-                        </IconButton>
-                        <IconButton tooltip='Delete' tooltipPosition='top-center' onClick={() => this.deleteCard()}>
+                        <DropDownMenu
+                            style={Styles.notecardAdd}
+                            iconStyle={Styles.notecardDropdownIcon}
+                            underlineStyle={Styles.notecardDropdownUnderline}
+                            iconButton={<ContentAdd/>}
+                        >
+                            <MenuItem onClick={() => this.addNote('- ')}>Regular</MenuItem>
+                            <MenuItem onClick={() => this.addNote('* ')}>Comment</MenuItem>
+                            <MenuItem onClick={() => this.addNote('? ')}>Question</MenuItem>
+                            <MenuItem onClick={() => this.addNote('! ')}>Excited</MenuItem>
+                        </DropDownMenu>
+                        <IconButton onClick={() => this.deleteCard()}>
                             <NavigationClose/>
                         </IconButton>
                      </div>

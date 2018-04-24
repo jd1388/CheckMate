@@ -35,12 +35,17 @@ export default {
     notecardExtraOptions: {
         height: '48px',
         bottom: '4px',
-        left: '16px'
+        left: '48px'
     },
     notecardDropdownIcon: {
         fill: 'black'
     },
     notecardDropdownUnderline: {
         display: 'none'
-    }
+    },
+    notecardAdd: {
+        height: '48px',
+        bottom: '4px',
+        left: '16px'
+    },
 };

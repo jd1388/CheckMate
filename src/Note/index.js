@@ -48,7 +48,7 @@ export default class Note extends Component {
         }
     }
 
-    addNote() {
+    addNote(type) {
         const {
             note,
             getNextId,
@@ -58,7 +58,7 @@ export default class Note extends Component {
         const newNote = {
             id: getNextId(),
             parentId: note.id,
-            value: '',
+            value: type,
             children: []
         };
 
@@ -107,7 +107,10 @@ export default class Note extends Component {
         return (
             <Paper key={id} style={this.styleNote(value.trim().charAt(0))}>
                 <div style={Styles.cardTextContainer}>
-                    <TextareaAutosize style={Styles.elementValue} defaultValue={value.trim()}/>
+                    <TextareaAutosize
+                        style={Styles.elementValue}
+                        defaultValue={value.trim().length === 1 ? `${value.trim()} ` : value.trim()}
+                    />
                     <div style={Styles.buttonContainer}>
                         <DropDownMenu
                             style={Styles.noteExtraOptions}
@@ -115,10 +118,18 @@ export default class Note extends Component {
                             underlineStyle={Styles.noteDropdownUnderline}
                             iconButton={<HardwareKeyboardArrowDown/>}
                         />
-                        <IconButton tooltip='Add' tooltipPosition='top-center' onClick={() => this.addNote()}>
-                            <ContentAdd/>
-                        </IconButton>
-                        <IconButton tooltip='Delete' tooltipPosition='top-center' onClick={() => this.deleteNote()}>
+                        <DropDownMenu
+                            style={Styles.noteAdd}
+                            iconStyle={Styles.noteDropdownIcon}
+                            underlineStyle={Styles.noteDropdownUnderline}
+                            iconButton={<ContentAdd/>}
+                        >
+                            <MenuItem onClick={() => this.addNote('- ')}>Regular</MenuItem>
+                            <MenuItem onClick={() => this.addNote('* ')}>Comment</MenuItem>
+                            <MenuItem onClick={() => this.addNote('? ')}>Question</MenuItem>
+                            <MenuItem onClick={() => this.addNote('! ')}>Excited</MenuItem>
+                        </DropDownMenu>
+                        <IconButton onClick={() => this.deleteNote()}>
                             <NavigationClose/>
                         </IconButton>
                     </div>

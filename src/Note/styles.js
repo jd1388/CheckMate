@@ -55,12 +55,17 @@ export default {
     noteExtraOptions: {
         height: '48px',
         bottom: '4px',
-        left: '16px'
+        left: '48px'
     },
     noteDropdownIcon: {
         fill: 'black'
     },
     noteDropdownUnderline: {
         display: 'none'
+    },
+    noteAdd: {
+        height: '48px',
+        bottom: '4px',
+        left: '16px'
     }
 };
