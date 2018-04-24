@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import NoteCard from '../NoteCard';
+
+import Styles from './styles';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');
@@ -147,14 +150,30 @@ class App extends Component {
         });
     }
 
+    addCard() {
+        const { todoList } = this.state;
+
+        const newCard = {
+            id: this.getNextId(),
+            parentId: 0,
+            value: ': ',
+            children: []
+        };
+
+        const newTodoList = [...todoList, newCard];
+
+        this.setState({ todoList: newTodoList });
+    }
+
     render() {
         if (!this.state.todoListRead)
             return <div>Working on it</div>
 
         return (
             <MuiThemeProvider>
-                <div>
+                <div style={Styles.appContainer}>
                     {this.displayCards()}
+                    <RaisedButton label='Add New Card' style={Styles.addCard} onClick={() => this.addCard()}/>
                 </div>
             </MuiThemeProvider>
         );
