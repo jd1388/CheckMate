@@ -21,6 +21,8 @@ const electron = window.require('electron');
 const fs = electron.remote.require('fs');
 const app = electron.remote.app;
 
+const todoListSaveLocation = `${app.getAppPath()}/todo`;
+
 class App extends Component {
     constructor() {
         super();
@@ -48,8 +50,8 @@ class App extends Component {
             this.setState({ firstLoad: false });
     }
 
-    readTodoList() {
-        fs.readFile(`${app.getAppPath()}/todo`, (error, data) => {
+    readTodoList(filepath = todoListSaveLocation) {
+        fs.readFile(filepath, (error, data) => {
             const listElements = data.toString('utf-8').split('\n').filter(line => line.trim().length > 0);
 
             const parsedList = [];
@@ -215,7 +217,7 @@ class App extends Component {
         ]
     }
 
-    saveChanges() {
+    saveChanges(filepath) {
         const { todoList } = this.state;
 
         const whitespacePerLevel = '    ';
@@ -248,7 +250,7 @@ class App extends Component {
 
         const stringifiedTodoList = `${flattenedTodoList.join('\n')}\n`;
 
-        fs.writeFile(`${app.getAppPath()}/todo`, stringifiedTodoList, error => {
+        fs.writeFile(filepath, stringifiedTodoList, error => {
             if (error)
                 console.error(error.message);
             else
@@ -289,7 +291,7 @@ class App extends Component {
                                 <NavigationClose/>
                             </IconButton>
                         </div>
-                        <MenuItem onClick={() => this.saveChanges()}>Save Changes</MenuItem>
+                        <MenuItem onClick={() => this.saveChanges(todoListSaveLocation)}>Save Changes</MenuItem>
                         <MenuItem>Import Notes</MenuItem>
                         <MenuItem>Export to File</MenuItem>
                         <MenuItem onClick={() => this.toggleDeleteAllDialog()}>Delete All</MenuItem>
