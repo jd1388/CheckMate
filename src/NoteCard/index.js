@@ -5,7 +5,6 @@ import TextareaAutosize from 'react-autosize-textarea';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import HardwareKeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
@@ -16,6 +15,10 @@ import Styles from './styles';
 export default class NoteCard extends Component {
     constructor() {
         super();
+
+        this.state = {
+            valueChanged: false
+        }
 
         this.updateTree = this.updateTree.bind(this);
     }
@@ -81,6 +84,28 @@ export default class NoteCard extends Component {
         });
     }
 
+    updateValue() {
+        const { valueChanged } = this.state;
+        const { card, updateTree } = this.props;
+
+        if (valueChanged) {
+            const updatedCard = Object.assign({}, card, {
+                value: this.textarea.value
+            });
+
+            updateTree(updatedCard);
+
+            this.setState({ valueChanged: false });
+        }
+    }
+
+    setValueAsChanged() {
+        const { valueChanged } = this.state;
+
+        if (!valueChanged)
+            this.setState({ valueChanged: true });
+    }
+
     componentDidMount() {
         const { firstLoad } = this.props;
 
@@ -100,6 +125,8 @@ export default class NoteCard extends Component {
                     <TextareaAutosize
                         style={Styles.notecardTitleValue}
                         defaultValue={value.trim().length === 1 ? `${value.trim()} ` : value.trim()}
+                        onChange={() => this.setValueAsChanged()}
+                        onBlur={() => this.updateValue()}
                         innerRef={textarea => this.textarea = textarea}
                     />
                     <div style={Styles.notecardTitleMenu}>

@@ -4,7 +4,6 @@ import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import HardwareKeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import TextareaAutosize from 'react-autosize-textarea';
@@ -14,6 +13,10 @@ import Styles from './styles';
 export default class Note extends Component {
     constructor() {
         super();
+
+        this.state = {
+            valueChanged: false
+        };
 
         this.updateTree = this.updateTree.bind(this);
     }
@@ -98,6 +101,28 @@ export default class Note extends Component {
         }
     }
 
+    updateValue() {
+        const { valueChanged } = this.state;
+        const { note, updateTree } = this.props;
+
+        if (valueChanged) {
+            const updatedNote = Object.assign({}, note, {
+                value: this.textarea.value
+            });
+
+            updateTree(updatedNote);
+
+            this.setState({ valueChanged: false });
+        }
+    }
+
+    setValueAsChanged() {
+        const { valueChanged } = this.state;
+
+        if (!valueChanged)
+            this.setState({ valueChanged: true });
+    }
+
     componentDidMount() {
         const { firstLoad } = this.props;
 
@@ -118,6 +143,8 @@ export default class Note extends Component {
                         style={Styles.elementValue}
                         defaultValue={value.trim().length === 1 ? `${value.trim()} ` : value.trim()}
                         innerRef={textarea => this.textarea = textarea}
+                        onChange={() => this.setValueAsChanged()}
+                        onBlur={() => this.updateValue()}
                     />
                     <div style={Styles.buttonContainer}>
                         <DropDownMenu
