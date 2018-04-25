@@ -11,6 +11,7 @@ import MenuItem from 'material-ui/MenuItem';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import Snackbar from 'material-ui/Snackbar';
 
 import NoteCard from '../NoteCard';
 
@@ -30,7 +31,8 @@ class App extends Component {
             nextId: 0,
             drawerOpen: false,
             deleteAllDialogOpen: false,
-            firstLoad: true
+            firstLoad: true,
+            saveMessageOpen: false
         };
 
         this.getNextId = this.getNextId.bind(this);
@@ -247,10 +249,17 @@ class App extends Component {
         const stringifiedTodoList = `${flattenedTodoList.join('\n')}\n`;
 
         fs.writeFile(`${app.getAppPath()}/todo`, stringifiedTodoList, error => {
-            console.log('File saved');
             if (error)
                 console.error(error.message);
+            else
+                this.toggleSaveMessage();
         });
+
+        this.toggleDrawer();
+    }
+
+    toggleSaveMessage() {
+        this.setState({ saveMessageOpen: !this.state.saveMessageOpen });
     }
 
     render() {
@@ -295,6 +304,12 @@ class App extends Component {
                     >
                         Are you sure you want to delete all of your notes?
                     </Dialog>
+                    <Snackbar
+                        open={this.state.saveMessageOpen}
+                        message='Your changes have been saved'
+                        autoHideDuration={2500}
+                        onRequestClose={() => this.toggleSaveMessage()}
+                    />
                 </div>
             </MuiThemeProvider>
         );
