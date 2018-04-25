@@ -213,6 +213,46 @@ class App extends Component {
         ]
     }
 
+    saveChanges() {
+        const { todoList } = this.state;
+
+        const whitespacePerLevel = '    ';
+
+        const flattenTree = (tree, level) => {
+            if (!tree.children.length) {
+                let levelSpacing = '';
+
+                for (let i = 0; i < level; i++) {
+                    levelSpacing = `${levelSpacing}${whitespacePerLevel}`;
+                }
+
+                return [`${levelSpacing}${tree.value.trim()}`];
+            } else {
+                let levelSpacing = '';
+
+                for (let i = 0; i < level; i++) {
+                    levelSpacing = `${levelSpacing}${whitespacePerLevel}`;
+                }
+
+                const flattenedTree = [`${levelSpacing}${tree.value.trim()}`];
+                tree.children.forEach(child => flattenedTree.push(...flattenTree(child, level + 1)));
+
+                return flattenedTree;
+            }
+        }
+
+        const flattenedTodoList = [];
+        todoList.forEach(node => flattenedTodoList.push(...flattenTree(node, 0)));
+
+        const stringifiedTodoList = `${flattenedTodoList.join('\n')}\n`;
+
+        fs.writeFile(`${app.getAppPath()}/todo`, stringifiedTodoList, error => {
+            console.log('File saved');
+            if (error)
+                console.error(error.message);
+        });
+    }
+
     render() {
         if (!this.state.todoListRead)
             return (
@@ -240,7 +280,7 @@ class App extends Component {
                                 <NavigationClose/>
                             </IconButton>
                         </div>
-                        <MenuItem>Save Changes</MenuItem>
+                        <MenuItem onClick={() => this.saveChanges()}>Save Changes</MenuItem>
                         <MenuItem>Import Notes</MenuItem>
                         <MenuItem>Export to File</MenuItem>
                         <MenuItem onClick={() => this.toggleDeleteAllDialog()}>Delete All</MenuItem>
