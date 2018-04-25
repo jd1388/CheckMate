@@ -52,11 +52,6 @@ export default {
         display: 'flex',
         justifyContent: 'space-between'
     },
-    noteExtraOptions: {
-        height: '48px',
-        bottom: '4px',
-        left: '48px'
-    },
     noteDropdownIcon: {
         fill: 'black'
     },

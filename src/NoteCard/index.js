@@ -104,12 +104,6 @@ export default class NoteCard extends Component {
                     />
                     <div style={Styles.notecardTitleMenu}>
                         <DropDownMenu
-                            style={Styles.notecardExtraOptions}
-                            iconStyle={Styles.notecardDropdownIcon}
-                            underlineStyle={Styles.notecardDropdownUnderline}
-                            iconButton={<HardwareKeyboardArrowDown/>}
-                        />
-                        <DropDownMenu
                             style={Styles.notecardAdd}
                             iconStyle={Styles.notecardDropdownIcon}
                             underlineStyle={Styles.notecardDropdownUnderline}

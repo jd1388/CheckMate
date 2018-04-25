@@ -32,11 +32,6 @@ export default {
         height: '100%',
         paddingTop: '4px'
     },
-    notecardExtraOptions: {
-        height: '48px',
-        bottom: '4px',
-        left: '48px'
-    },
     notecardDropdownIcon: {
         fill: 'black'
     },

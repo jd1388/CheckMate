@@ -121,12 +121,6 @@ export default class Note extends Component {
                     />
                     <div style={Styles.buttonContainer}>
                         <DropDownMenu
-                            style={Styles.noteExtraOptions}
-                            iconStyle={Styles.noteDropdownIcon}
-                            underlineStyle={Styles.noteDropdownUnderline}
-                            iconButton={<HardwareKeyboardArrowDown/>}
-                        />
-                        <DropDownMenu
                             style={Styles.noteAdd}
                             iconStyle={Styles.noteDropdownIcon}
                             underlineStyle={Styles.noteDropdownUnderline}
