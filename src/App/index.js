@@ -19,7 +19,7 @@ import Styles from './styles';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');
-const app = electron.remote.app;
+const { app, dialog } = electron.remote;
 
 const todoListSaveLocation = `${app.getAppPath()}/todo`;
 
@@ -264,6 +264,23 @@ class App extends Component {
         this.setState({ saveMessageOpen: !this.state.saveMessageOpen });
     }
 
+    importNotes() {
+        dialog.showOpenDialog(fileNames => {
+            if (!fileNames) {
+                console.log('No files selected');
+                return;
+            }
+
+            this.setState({
+                firstLoad: true,
+                todoListRead: false,
+                todoList: []
+            });
+
+            this.readTodoList(fileNames[0]);
+        });
+    }
+
     render() {
         if (!this.state.todoListRead)
             return (
@@ -292,7 +309,7 @@ class App extends Component {
                             </IconButton>
                         </div>
                         <MenuItem onClick={() => this.saveChanges(todoListSaveLocation)}>Save Changes</MenuItem>
-                        <MenuItem>Import Notes</MenuItem>
+                        <MenuItem onClick={() => this.importNotes()}>Import Notes</MenuItem>
                         <MenuItem>Export to File</MenuItem>
                         <MenuItem onClick={() => this.toggleDeleteAllDialog()}>Delete All</MenuItem>
                     </Drawer>
