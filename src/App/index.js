@@ -29,7 +29,8 @@ class App extends Component {
             todoListRead: false,
             nextId: 0,
             drawerOpen: false,
-            deleteAllDialogOpen: false
+            deleteAllDialogOpen: false,
+            firstLoad: true
         };
 
         this.getNextId = this.getNextId.bind(this);
@@ -38,6 +39,11 @@ class App extends Component {
 
     componentDidMount() {
         this.readTodoList();
+    }
+
+    componentDidUpdate() {
+        if (this.state.firstLoad)
+            this.setState({ firstLoad: false });
     }
 
     readTodoList() {
@@ -152,11 +158,17 @@ class App extends Component {
     }
 
     displayCards() {
-        const { todoList } = this.state;
+        const { todoList, firstLoad } = this.state;
 
         return todoList.map(card => {
             return (
-                <NoteCard card={card} getNextId={this.getNextId} updateTree={this.updateTree} key={card.id}/>
+                <NoteCard
+                    card={card}
+                    getNextId={this.getNextId}
+                    updateTree={this.updateTree}
+                    firstLoad={firstLoad}
+                    key={card.id}
+                />
             );
         });
     }

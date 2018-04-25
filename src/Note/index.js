@@ -12,14 +12,8 @@ import TextareaAutosize from 'react-autosize-textarea';
 import Styles from './styles';
 
 export default class Note extends Component {
-    constructor(props) {
-        super(props);
-
-        const { notes } = props;
-
-        this.state = {
-            notes
-        };
+    constructor() {
+        super();
 
         this.updateTree = this.updateTree.bind(this);
     }
@@ -76,11 +70,17 @@ export default class Note extends Component {
     }
 
     displaySubnotes() {
-        const { note, getNextId } = this.props;
+        const { note, getNextId, firstLoad } = this.props;
 
         return note.children.map(subnote => {
             return (
-                <Note note={subnote} getNextId={getNextId} updateTree={this.updateTree} key={subnote.id}/>
+                <Note
+                    note={subnote}
+                    getNextId={getNextId}
+                    updateTree={this.updateTree}
+                    firstLoad={firstLoad}
+                    key={subnote.id}
+                />
             );
         });
     }
@@ -98,6 +98,13 @@ export default class Note extends Component {
         }
     }
 
+    componentDidMount() {
+        const { firstLoad } = this.props;
+
+        if (!firstLoad)
+            setTimeout(() => this.textarea.focus(), 0);
+    }
+
     render() {
         const {
             value,
@@ -110,6 +117,7 @@ export default class Note extends Component {
                     <TextareaAutosize
                         style={Styles.elementValue}
                         defaultValue={value.trim().length === 1 ? `${value.trim()} ` : value.trim()}
+                        innerRef={textarea => this.textarea = textarea}
                     />
                     <div style={Styles.buttonContainer}>
                         <DropDownMenu

@@ -72,13 +72,20 @@ export default class NoteCard extends Component {
     }
 
     displayNotes() {
-        const { card, getNextId } = this.props;
+        const { card, getNextId, firstLoad } = this.props;
 
         return card.children.map(note => {
             return (
-                <Note note={note} getNextId={getNextId} updateTree={this.updateTree} key={note.id}/>
+                <Note note={note} getNextId={getNextId} updateTree={this.updateTree} firstLoad={firstLoad} key={note.id}/>
             );
         });
+    }
+
+    componentDidMount() {
+        const { firstLoad } = this.props;
+
+        if (!firstLoad)
+            setTimeout(() => this.textarea.focus(), 0);
     }
 
     render() {
@@ -93,6 +100,7 @@ export default class NoteCard extends Component {
                     <TextareaAutosize
                         style={Styles.notecardTitleValue}
                         defaultValue={value.trim().length === 1 ? `${value.trim()} ` : value.trim()}
+                        innerRef={textarea => this.textarea = textarea}
                     />
                     <div style={Styles.notecardTitleMenu}>
                         <DropDownMenu
