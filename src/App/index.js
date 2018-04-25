@@ -34,7 +34,8 @@ class App extends Component {
             drawerOpen: false,
             deleteAllDialogOpen: false,
             firstLoad: true,
-            saveMessageOpen: false
+            snackbarOpen: false,
+            snackbarMessage: 'Your notes have been saved'
         };
 
         this.getNextId = this.getNextId.bind(this);
@@ -253,15 +254,22 @@ class App extends Component {
         fs.writeFile(filepath, stringifiedTodoList, error => {
             if (error)
                 console.error(error.message);
-            else
-                this.toggleSaveMessage();
+            else {
+                if (filepath === todoListSaveLocation)
+                    this.toggleSnackbar('Your notes have been saved');
+                else
+                    this.toggleSnackbar(`Your notes have been exported to ${filepath}`);
+            }
         });
 
         this.toggleDrawer();
     }
 
-    toggleSaveMessage() {
-        this.setState({ saveMessageOpen: !this.state.saveMessageOpen });
+    toggleSnackbar(message = '') {
+        this.setState({
+            snackbarOpen: !this.state.snackbarOpen,
+            snackbarMessage: message
+        });
     }
 
     importNotes() {
@@ -278,8 +286,8 @@ class App extends Component {
             });
 
             this.readTodoList(fileNames[0]);
-
             this.toggleDrawer();
+            this.toggleSnackbar(`Your notes have been imported from ${fileNames[0]}`);
         });
     }
 
@@ -337,10 +345,10 @@ class App extends Component {
                         Are you sure you want to delete all of your notes?
                     </Dialog>
                     <Snackbar
-                        open={this.state.saveMessageOpen}
-                        message='Your changes have been saved'
+                        open={this.state.snackbarOpen}
+                        message={this.state.snackbarMessage}
                         autoHideDuration={2500}
-                        onRequestClose={() => this.toggleSaveMessage()}
+                        onRequestClose={() => this.toggleSnackbar()}
                     />
                 </div>
             </MuiThemeProvider>
