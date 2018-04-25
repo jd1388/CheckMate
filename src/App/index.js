@@ -267,7 +267,7 @@ class App extends Component {
     importNotes() {
         dialog.showOpenDialog(fileNames => {
             if (!fileNames) {
-                console.log('No files selected');
+                console.warn('No files selected');
                 return;
             }
 
@@ -278,6 +278,19 @@ class App extends Component {
             });
 
             this.readTodoList(fileNames[0]);
+
+            this.toggleDrawer();
+        });
+    }
+
+    exportNotes() {
+        dialog.showSaveDialog(filepath => {
+            if (!filepath) {
+                console.warn('File not saved');
+                return;
+            }
+
+            this.saveChanges(filepath);
         });
     }
 
@@ -310,7 +323,7 @@ class App extends Component {
                         </div>
                         <MenuItem onClick={() => this.saveChanges(todoListSaveLocation)}>Save Changes</MenuItem>
                         <MenuItem onClick={() => this.importNotes()}>Import Notes</MenuItem>
-                        <MenuItem>Export to File</MenuItem>
+                        <MenuItem onClick={() => this.exportNotes()}>Export to File</MenuItem>
                         <MenuItem onClick={() => this.toggleDeleteAllDialog()}>Delete All</MenuItem>
                     </Drawer>
                     {this.displayCards()}
