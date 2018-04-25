@@ -1,6 +1,5 @@
 export default {
     notecardTitle: {
-        fontWeight: 'bold',
         backgroundColor: '#ffe9ba',
         display: 'flex',
         justifyContent: 'space-between',
@@ -17,7 +16,7 @@ export default {
         outline: 'none',
         overflow: 'auto',
         resize: 'none',
-        fontWeight: 600
+        fontWeight: 500
     },
     notecard: {
         fontSize: '16pt',
