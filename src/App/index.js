@@ -55,6 +55,7 @@ class App extends Component {
 
     setupKeyboardShortcuts() {
         Mousetrap.bind('ctrl+s', () => this.saveChanges(todoListSaveLocation));
+        Mousetrap.bind('ctrl+shift+s', () => this.exportNotes());
     }
 
     readTodoList(filepath = todoListSaveLocation) {
@@ -300,12 +301,8 @@ class App extends Component {
 
     exportNotes() {
         dialog.showSaveDialog(filepath => {
-            if (!filepath) {
-                console.warn('File not saved');
-                return;
-            }
-
-            this.saveChanges(filepath);
+            if (filepath)
+                this.saveChanges(filepath);
         });
     }
 
