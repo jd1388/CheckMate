@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Mousetrap from 'mousetrap';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -43,12 +44,17 @@ class App extends Component {
     }
 
     componentDidMount() {
+        this.setupKeyboardShortcuts();
         this.readTodoList();
     }
 
     componentDidUpdate() {
         if (this.state.firstLoad)
             this.setState({ firstLoad: false });
+    }
+
+    setupKeyboardShortcuts() {
+        Mousetrap.bind('ctrl+s', () => this.saveChanges(todoListSaveLocation));
     }
 
     readTodoList(filepath = todoListSaveLocation) {
@@ -219,7 +225,7 @@ class App extends Component {
     }
 
     saveChanges(filepath) {
-        const { todoList } = this.state;
+        const { todoList, drawerOpen } = this.state;
 
         const whitespacePerLevel = '    ';
 
@@ -262,7 +268,8 @@ class App extends Component {
             }
         });
 
-        this.toggleDrawer();
+        if (drawerOpen)
+            this.toggleDrawer();
     }
 
     toggleSnackbar(message = '') {
