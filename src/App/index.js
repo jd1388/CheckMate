@@ -56,6 +56,7 @@ class App extends Component {
     setupKeyboardShortcuts() {
         Mousetrap.bind('ctrl+s', () => this.saveChanges(todoListSaveLocation));
         Mousetrap.bind('ctrl+shift+s', () => this.exportNotes());
+        Mousetrap.bind('ctrl+o', () => this.importNotes());
     }
 
     readTodoList(filepath = todoListSaveLocation) {
@@ -294,7 +295,10 @@ class App extends Component {
             });
 
             this.readTodoList(fileNames[0]);
-            this.toggleDrawer();
+
+            if (this.state.drawerOpen)
+                this.toggleDrawer();
+
             this.toggleSnackbar(`Your notes have been imported from ${fileNames[0]}`);
         });
     }
